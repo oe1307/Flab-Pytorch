@@ -1,8 +1,10 @@
+import os
 from glob import glob
 
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision import transforms as T
+from torchvision.datasets import ImageNet
 
 
 class MyDataset(Dataset):
@@ -27,6 +29,9 @@ class MyDataset(Dataset):
 
 
 if __name__ == "__main__":
+    if not os.path.exists("../storage/imagenet/val"):
+        print("Expanding imagenet dataset...")
+        ImageNet("../storage/imagenet", split="val")
     dataset = MyDataset("../storage/imagenet/val/*/*.JPEG")
     data, label = dataset[0]
     print(data.shape)
