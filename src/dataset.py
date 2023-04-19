@@ -9,6 +9,9 @@ from torchvision.datasets import ImageNet
 
 class MyDataset(Dataset):
     def __init__(self, path):
+        """
+        set path of images and transform
+        """
         self.path = glob(path)
         self.transform = T.Compose(
             [
@@ -19,9 +22,11 @@ class MyDataset(Dataset):
         )
 
     def __len__(self):
+        """set number of images in dataset"""
         return len(self.path)
 
     def __getitem__(self, idx):
+        """get image and label per index"""
         image = Image.open(self.path[idx]).convert("RGB")
         image = self.transform(image)
         label = self.path[idx].split("/")[-2]
@@ -34,5 +39,6 @@ if __name__ == "__main__":
         ImageNet("../storage/imagenet", split="val")
     dataset = MyDataset("../storage/imagenet/val/*/*.JPEG")
     data, label = dataset[0]
+    print(data)
     print(data.shape)
     print(label)
