@@ -12,3 +12,4 @@ if __name__ == "__main__":
         print(data)
         print(data.shape)
         print(label)
+        break
