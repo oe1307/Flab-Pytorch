@@ -1,10 +1,11 @@
 import os
+import urllib
 from glob import glob
 
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision import transforms as T
-from torchvision.datasets import ImageNet
+from torchvision.datasets.imagenet import parse_devkit_archive, parse_val_archive
 
 
 class MyDataset(Dataset):
@@ -13,6 +14,8 @@ class MyDataset(Dataset):
         set path of images and transform
         """
         self.path = glob(path)
+        self.labels = os.listdir(os.path.dirname(self.path[0]))
+        self.n_classes = len(self.labels)
         self.transform = T.Compose(
             [
                 T.Resize((224, 224)),
@@ -34,10 +37,20 @@ class MyDataset(Dataset):
 
 
 if __name__ == "__main__":
-    if not os.path.exists("../storage/imagenet/val"):
+    if not os.path.exists("../storage/val"):
         print("Expanding imagenet dataset...")
-        ImageNet("../storage/imagenet", split="val")
-    dataset = MyDataset("../storage/imagenet/val/*/*.JPEG")
+        parse_devkit_archive("../storage")
+        parse_val_archive("../storage")
+        urllib.request.urlretrieve(
+            "https://s3.amazonaws.com/"
+            + "deep-learning-models/image-models/imagenet_class_index.json",
+            "../storage/imagenet_class_index.json",
+        )
+
+    dataset = MyDataset("../storage/val/*/*.JPEG")
+    print("n_examples =", len(dataset))
+    print("n_classes =", dataset.n_classes)
+
     data, label = dataset[0]
     print(data)
     print(data.shape)

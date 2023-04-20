@@ -3,3 +3,4 @@ pillow
 matplotlib
 torchvision
 scipy
+timm
