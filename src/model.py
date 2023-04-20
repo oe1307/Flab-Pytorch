@@ -2,7 +2,7 @@ import timm
 from torch import nn
 from torch.utils.data import DataLoader
 
-from dataset import MyDataset
+from load_dataset import MyDataset
 
 
 class ResNet50(nn.Module):
@@ -35,19 +35,22 @@ class ResNet50(nn.Module):
 
 
 if __name__ == "__main__":
-    dataset = MyDataset("../storage/imagenet/val/*/*.JPEG")
+    dataset = MyDataset("../storage/val/*/*.JPEG")
     dataloader = DataLoader(dataset, batch_size=10, shuffle=True)
     model = ResNet50(dataset.n_classes)
 
     # code for checking the layers of the model
+    print("layers: ")
     layers = dict(model.named_modules()).keys()
     layers = [layer for layer in layers if len(layer.split(".")) == 2]
     for layer in layers:
         print(layer)
+    print()
 
-    for images, labels in dataloader:
+    for images, labels, indexes in dataloader:
         outputs = model(images)
         print(outputs)
         print(outputs.shape)
-        print(outputs.argmax(dim=1))
+        print("prediction:", outputs.argmax(dim=1))
+        print("ground_truth:", indexes)
         break
