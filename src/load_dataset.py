@@ -1,7 +1,7 @@
+import json
 import os
 from glob import glob
 
-import torch
 from PIL import Image
 from torch.utils.data import Dataset
 from torchvision import transforms as T
@@ -16,8 +16,7 @@ class MyDataset(Dataset):
         self.path = glob(path)
         self.labels = os.listdir(os.path.dirname(self.path[0]))
         self.n_classes = len(self.labels)
-        meta_data = torch.load("../storage/meta.bin")
-        print(meta_data[0])
+        self.idx2label = json.load(open("../storage/idx2label.json", "r"))
         self.transform = T.Compose(
             [
                 T.Resize((224, 224)),

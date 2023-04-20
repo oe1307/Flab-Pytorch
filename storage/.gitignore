@@ -1,4 +1,3 @@
 *
 !.gitignore
-!class_to_id.json
-!id_to_class.json
+!class2id.json
