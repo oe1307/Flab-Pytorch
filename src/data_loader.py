@@ -1,6 +1,6 @@
 from torch.utils.data import DataLoader
 
-from dataset import MyDataset
+from load_dataset import MyDataset
 
 if __name__ == "__main__":
     # below is the example of how to use DataLoader

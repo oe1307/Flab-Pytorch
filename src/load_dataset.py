@@ -37,6 +37,7 @@ if __name__ == "__main__":
     if not os.path.exists("../storage/imagenet/val"):
         print("Expanding imagenet dataset...")
         ImageNet("../storage/imagenet", split="val")
+
     dataset = MyDataset("../storage/imagenet/val/*/*.JPEG")
     data, label = dataset[0]
     print(data)
