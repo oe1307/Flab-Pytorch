@@ -56,5 +56,5 @@ if __name__ == "__main__":
     data, label, index = dataset[0]
     print(data)
     print(data.shape)
-    print(label)
-    print(index)
+    print("label:", label)
+    print("index:", index)
